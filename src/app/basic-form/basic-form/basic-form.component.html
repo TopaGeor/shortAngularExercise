@@ -1,65 +1,76 @@
-<form>
-
-  <!-- First name -->
-  <div class="form-group">
-    <label  for="firstNameInput">First Name</label>
-    <input  type="text"
-            class="form-control"
-            id="firstNameInput"
-            placeholder="Enter first name">
-
-  </div>
-  <!-- /First name -->
-
-  <!-- Last name -->
-  <div class="form-group">
-    <label  for="lastNameInput">Last Name</label>
-    <input  type="text"
-            class="form-control"
-            id="lastNameInput"
-            placeholder="Enter last name">
-
-  </div>
-
-  <!-- /Last name -->
-
-  <!-- is experienced -->
-  <div class="form-group form-check">
-    <input class="form-check-input"  type="checkbox">
-    <label class="form-check-label">I have experience > 2 yrs </label>
-  </div>
-  <!-- /is experienced -->
-
-  <!-- Angular preference -->
-  <div class="form-group">
-    <label class="font-weight-bold">Angular Preferene</label>
-    <div class="form-check">
-      <!-- An input is missing here -->
-      <label class="form-check-label" for="angularjs">angularJs</label>
+<form [formGroup]="form">
+    <!-- First name -->
+    <div class="form-group">
+        <label  for="firstNameInput">First Name</label>
+        <input  type="text"
+                class="form-control"
+                id="firstNameInput"
+                placeholder="Enter first name"
+                formControlName="firstName">
     </div>
 
-    <div class="form-check">
-      <!-- An input is missing here -->
-      <label class="form-check-label" for="angular">angular</label>
+    <div *ngIf="form.get('firstName').invalid && form.get('firstName').dirty">
+        <div *ngIf="form.get('firstName').errors?.required" > 
+            <p class="errorMessage">Field is required  </p>
+        </div>
+        <div *ngIf="form.get('firstName').errors?.minlength">
+            <p class="errorMessage">The minimum length is 3</p>
+        </div>
     </div>
+    <!-- /First name -->
 
-  </div>
-  <!-- /Angular preferene -->
+    <!-- Last name -->
+    <div class="form-group">
+        <label  for="lastNameInput">Last Name</label>
+        <input  type="text"
+                class="form-control"
+                id="lastNameInput"
+                placeholder="Enter last name"
+                formControlName="lastName">
+    </div>
+    <!-- /Last name -->
 
-  <!-- Favourite language -->
-  <div class="form-group">
-    <label class="form-control-label">Favourite Language</label>
-    <!-- A select control is missing here -->
-  </div>
-  <!-- /Favourite language -->
+    <!-- is experienced -->
+    <div class="form-group form-check">
+        <input class="form-check-input" formControlName="hasExpirience"  type="checkbox">
+        <label class="form-check-label">I have experience > 2 yrs </label>
+    </div>
+    <!-- /is experienced -->
 
-  <!-- JS Version -->
-  <div class="form-group">
-    <label>JS Version</label>
-    <input class="form-control" type="text">
+    <!-- Angular preference -->
+    <div class="form-group">
+        <label class="font-weight-bold">Angular Preferene</label>
+        <div class="form-check">
+        <input type="radio" formControlName="angularPreference" name="angularPreference" value="angularJs">
+        <label class="form-check-label" for="angularjs">angularJs</label>
+        </div>
 
-  </div>
-  <!-- /JS Version -->
+        <div class="form-check">
+        <input type="radio" formControlName="angularPreference" name="angularPreference" value="angular">
+        <label class="form-check-label" for="angular">angular</label>
+        </div>
+    </div>
+    <!-- /Angular preferene -->
 
-  <button class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+    <!-- Favourite language -->
+    <div class="form-group">
+        <label class="form-control-label">Favourite Language</label>
+        <select class="form-control" id="exampleFormControlSelect1" formControlName="programmingLanguage">
+        <option *ngFor="let item of programmingLanguages">{{item}}</option>
+        </select>
+    </div>
+    <!-- /Favourite language -->
+
+    <!-- JS Version -->
+    <div class="form-group">
+        <label>JS Version</label>
+        <input class="form-control" type="text" formControlName="jsVersion">
+    </div>
+    <div *ngIf="form.get('jsVersion').invalid && form.get('jsVersion').dirty">
+        <p class="errorMessage">Field is required</p>
+    </div>
+    <!-- /JS Version -->
+
+    <button class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+    {{form.value | json}}
 </form>
